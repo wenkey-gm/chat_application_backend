@@ -1,10 +1,7 @@
-class Calculation:
+from config.database import Database
+from src.utils.init_tables import InitializeTables
 
-    def __init__(self, a, b):
-        self.a = a
-        self.b = b
-
-    def addition(self):
-        return self.a + self.b
-
-
+if __name__ == '__main__':
+    db = Database()
+    tables = InitializeTables(database=db)
+    tables.create_tables()
