@@ -6,22 +6,22 @@ from src.utils.constants import DATABASE_URL
 
 
 class Database:
-    def __init__(self):
-        self.engine = create_engine(DATABASE_URL, echo=True)
-        self._create_database_if_not_exists()
-        self.session_factory = sessionmaker(bind=self.engine)
-        self.session = scoped_session(self.session_factory)
+    engine = create_engine(DATABASE_URL, echo=True)
+    session_factory = sessionmaker(bind=engine)
+    session = scoped_session(session_factory)
 
-    def _create_database_if_not_exists(self):
-        if not database_exists(self.engine.url):
-            create_database(self.engine.url)
+    @classmethod
+    def initialize_database(cls):
+        if not database_exists(cls.engine.url):
+            create_database(cls.engine.url)
         else:
             # Optional: Establish a connection to verify the database is accessible
-            with self.engine.connect() as connection:
+            with cls.engine.connect() as connection:
                 pass
 
-    def get_session(self):
-        session = self.session()
+    @classmethod
+    def get_session(cls):
+        session = cls.session()
         try:
             print("Connection successful!")
             yield session
