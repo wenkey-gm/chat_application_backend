@@ -6,6 +6,7 @@ from pydantic import EmailStr, BaseModel
 
 class MessageCreate(BaseModel):
     content: str
+    is_received: bool
     user_id: int
 
     class Config:
