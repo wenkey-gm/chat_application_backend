@@ -6,4 +6,12 @@ class UserDto(BaseModel):
     password: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class UserResponseModel(BaseModel):
+    id: int
+    email: EmailStr
+
+    class Config:
+        from_attributes = True
