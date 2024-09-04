@@ -21,7 +21,7 @@ class MessageRepository:
         return user_info
 
     def save_user_message(self, message: MessageCreate) -> Message:
-        db_message = Message(content=message.content, user_id=message.user_id)
+        db_message = Message(content=message.content, user_id=message.user_id, is_received=message.is_received)
         self.session.add(db_message)
         self.session.commit()
         self.session.refresh(db_message)

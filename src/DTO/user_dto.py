@@ -12,6 +12,7 @@ class UserDto(BaseModel):
 class UserResponseModel(BaseModel):
     id: int
     email: EmailStr
+    is_success: bool
 
     class Config:
         from_attributes = True

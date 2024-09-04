@@ -18,3 +18,4 @@ async def get_user(
         return user_service.get_user(user)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+

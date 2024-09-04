@@ -11,5 +11,5 @@ class UserService:
         db_user = self.user_repository.get_user(user)
         if db_user is None:
             raise ValueError("User not found")
-        return UserResponseModel(id=db_user.id, email=db_user.email)
+        return UserResponseModel(id=db_user.id, email=db_user.email, is_success=True)
 

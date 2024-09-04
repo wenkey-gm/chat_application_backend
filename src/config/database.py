@@ -28,5 +28,6 @@ class Database:
         except Exception as e:
             print(f"An error occurred: {e}")
             session.rollback()
+            raise
         finally:
             session.close()

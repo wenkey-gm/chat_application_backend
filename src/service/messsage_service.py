@@ -17,7 +17,7 @@ class MessageService:
             MessageResponseModel(
                 id=message.id,
                 content=message.content,
-                is_recieved=message.is_received,
+                is_received=bool(message.is_received),
                 user_id=message.user_id,
                 timestamp=message.timestamp,
             )
@@ -30,8 +30,9 @@ class MessageService:
 
     def save_user_message(self, message: MessageCreate) -> MessageResponseModel:
         message = self.message_repository.save_user_message(message)
+        print("message response ", message)
         return MessageResponseModel(id=message.id,
                                     content=message.content,
-                                    is_recieved=message.is_received,
+                                    is_received=bool(message.is_received),
                                     user_id=message.user_id,
                                     timestamp=message.timestamp, )
