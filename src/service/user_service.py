@@ -1,13 +1,9 @@
 # service/user_service.py
 
-from typing import List
-
 
 from src.DTO.message_dto import MessageDto, MessageResponseModel, MessageCreate
 
 from src.DTO.user_dto import UserDto, UserResponseModel
-
-from src.models.message import Message
 
 from src.repository.user_repository import UserRepository
 
@@ -32,6 +28,7 @@ class UserService:
             MessageResponseModel(
                 id=message.id,
                 content=message.content,
+                is_recieved=message.is_received,
                 user_id=message.user_id,
                 timestamp=message.timestamp,
             )
@@ -42,5 +39,10 @@ class UserService:
             id=db_user.id, email=db_user.email, messages=message_response_list
         )
 
-    def save_user_message(self, message: MessageCreate):
-        self.user_repository.save_user_message(message)
+    def save_user_message(self, message: MessageCreate) -> MessageResponseModel:
+        message = self.user_repository.save_user_message(message)
+        return MessageResponseModel(id=message.id,
+                                    content=message.content,
+                                    is_recieved=message.is_received,
+                                    user_id=message.user_id,
+                                    timestamp=message.timestamp, )

@@ -15,6 +15,7 @@ class MessageCreate(BaseModel):
 class MessageResponseModel(BaseModel):
     id: int
     content: str
+    is_received: bool
     user_id: int
     timestamp: datetime
 
