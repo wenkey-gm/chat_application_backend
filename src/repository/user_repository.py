@@ -1,6 +1,8 @@
-from sqlalchemy import select
+from sqlalchemy import and_, select
 from sqlalchemy.orm import Session
 
+from src.DTO.user_dto import UserDto
+from src.models.message import Message
 from src.models.user import User
 
 
@@ -8,18 +10,13 @@ class UserRepository:
     def __init__(self, session: Session):
         self.session = session
 
-    def create_user(self, email: str, password: str) -> User:
-        user = User(email=email, password=password)
-        self.session.add(user)
-        self.session.commit()
-        self.session.refresh(user)
-        return user
+    def get_user(self, user: UserDto) -> User:
+        statement = select(User).where(and_(User.email == user.email, User.password == user.password))
+        user_info = self.session.scalars(statement).first()
+        return user_info
 
-    def get_users(self):
-        return self.session.query(User).all()
-
-    def get_user_by_email(self, user_email: str) -> User:
-        filtered_users_statement = select(User).filter_by(email=user_email)
-        return self.session.scalars(filtered_users_statement).first()
-
-
+    def get_user_messages(self, email: str) -> User:
+        statement = (select(User, Message).join(Message, User.id == Message.user_id)
+                     .where(User.email.like(email)))
+        user_info = self.session.scalars(statement).first()
+        return user_info
