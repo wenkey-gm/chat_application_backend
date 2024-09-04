@@ -14,4 +14,3 @@ class InitializeTables:
     def drop_tables(self):
         User.metadata.drop_all(bind=self.database.engine)
         Message.metadata.drop_all(bind=self.database.engine)
-
