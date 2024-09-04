@@ -6,10 +6,7 @@ from src.config.database import Database
 from src.repository.message_repository import MessageRepository
 from src.service.messsage_service import MessageService
 
-message_router = APIRouter(
-    prefix='/api/'
-)
-
+message_router = APIRouter()
 
 @message_router.get("/{email_id}/messages", response_model=MessageDto)
 async def get_user_messages(email_id: str, db: Session = Depends(Database.get_session)):

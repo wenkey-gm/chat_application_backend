@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+
+from src.controller.message_controller import message_router
 from src.controller.user_controller import user_router
 from src.config.database import Database
 from src.utils.init_tables import create_tables, drop_tables
@@ -31,4 +33,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(user_router)
+app.include_router(user_router, prefix="/api")
+app.include_router(message_router, prefix="/api")
