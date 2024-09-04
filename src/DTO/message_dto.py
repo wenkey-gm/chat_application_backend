@@ -3,7 +3,13 @@ from typing import List
 
 from pydantic import EmailStr, BaseModel
 
-from src.models.message import Message
+
+class MessageCreate(BaseModel):
+    content: str
+    user_id: int
+
+    class Config:
+        from_attributes = True
 
 
 class MessageResponseModel(BaseModel):
@@ -13,12 +19,13 @@ class MessageResponseModel(BaseModel):
     timestamp: datetime
 
     class Config:
-        orm_mode = True  # Enables compatibility with ORM objects
+        from_attributes = True
 
 
 class MessageDto(BaseModel):
+    id: int
     email: EmailStr
     messages: List[MessageResponseModel]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
