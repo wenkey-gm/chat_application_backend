@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Database.initialize_database()
-    create_tables()
+    # create_tables()
     # drop_tables()
     yield
     Database.session.close()
