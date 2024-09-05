@@ -13,8 +13,8 @@ class MessageRepository:
 
     def get_user_messages(self, email: str) -> User:
         statement = (
-            select(User, Message)
-            .join(Message, User.id == Message.user_id)
+            select(User)
+            .outerjoin(Message, User.id == Message.user_id)
             .where(User.email.like(email))
         )
         user_info = self.session.scalars(statement).first()
