@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from src.DTO.message_dto import MessageDto, MessageCreate, MessageResponseModel
@@ -15,7 +16,9 @@ async def get_user_messages(email_id: str, db: Session = Depends(Database.get_se
     try:
         return message_service.get_user_messages(email_id)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail=f"Database error occurred: {str(e)}")
 
 
 @message_router.post("/message/", status_code=201, response_model=MessageResponseModel)
@@ -25,3 +28,6 @@ def create_message(message: MessageCreate, db: Session = Depends(Database.get_se
         return message_service.save_user_message(message)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail=f"Database error occurred: {str(e)}")
+

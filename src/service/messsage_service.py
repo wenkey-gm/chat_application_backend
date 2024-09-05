@@ -29,8 +29,10 @@ class MessageService:
         )
 
     def save_user_message(self, message: MessageCreate) -> MessageResponseModel:
+
+        if not message.content:
+            raise ValueError("Message content cannot be empty")
         message = self.message_repository.save_user_message(message)
-        print("message response ", message)
         return MessageResponseModel(id=message.id,
                                     content=message.content,
                                     is_received=bool(message.is_received),
