@@ -36,9 +36,9 @@ This is the backend for a chat application built using Python, FastApi, Docker, 
 - **tests/**: Integration tests create a fake sql server to run tests(not dockerized).
 - **Dockerfile**: Defines the Docker image configuration.
 - **docker-compose.yml**: Multi-container setup for Docker.
-- **init.sql**: SQL script to initialize the PostgreSQL database.
+- **init.sql**: SQL script to initialize the MySql database.
 
 ## Database
 
-This application uses PostgreSQL as the database, configured via `init.sql`.
+This application uses MySql as the database, configured via `init.sql`.
 

@@ -3,6 +3,7 @@ import unittest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, StaticPool
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy_utils import database_exists, create_database
 
 from src.config.database import Database
 from src.main import app
@@ -17,6 +18,9 @@ engine = create_engine(
     poolclass=StaticPool,
 )
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+if not database_exists(engine.url):
+    create_database(engine.url)
 
 User.metadata.create_all(bind=engine)
 Message.metadata.create_all(bind=engine)
