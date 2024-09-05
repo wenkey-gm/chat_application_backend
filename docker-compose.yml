@@ -27,7 +27,6 @@ services:
       DB_NAME: "chat_application"
       DB_HOST: db
       DB_PORT: "3306"
-      TEST_DB_NAME: "chat_application_test"
     ports:
       - "8000:8000"
     volumes:
