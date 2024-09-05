@@ -1,13 +1,4 @@
-# service/user_service.py
-
-from typing import List
-
-
-from src.DTO.message_dto import MessageDto, MessageResponseModel, MessageCreate
-
 from src.DTO.user_dto import UserDto, UserResponseModel
-
-from src.models.message import Message
 
 from src.repository.user_repository import UserRepository
 
@@ -20,27 +11,5 @@ class UserService:
         db_user = self.user_repository.get_user(user)
         if db_user is None:
             raise ValueError("User not found")
-        return UserResponseModel(id=db_user.id, email=db_user.email)
+        return UserResponseModel(id=db_user.id, email=db_user.email, is_success=True)
 
-    def get_user_messages(self, email: str) -> MessageDto:
-
-        db_user = self.user_repository.get_user_messages(email)
-        if db_user is None:
-            raise ValueError("User not found")
-
-        message_response_list = [
-            MessageResponseModel(
-                id=message.id,
-                content=message.content,
-                user_id=message.user_id,
-                timestamp=message.timestamp,
-            )
-            for message in db_user.messages
-        ]
-
-        return MessageDto(
-            id=db_user.id, email=db_user.email, messages=message_response_list
-        )
-
-    def save_user_message(self, message: MessageCreate):
-        self.user_repository.save_user_message(message)
