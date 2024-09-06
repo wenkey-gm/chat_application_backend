@@ -10,22 +10,22 @@ from src.service.messsage_service import MessageService
 message_router = APIRouter()
 
 
-@message_router.get("/{email_id}/messages", response_model=MessageDto)
-async def get_user_messages(email_id: str, db: Session = Depends(Database.get_session)):
+@message_router.get("/{token}/messages", response_model=MessageDto)
+async def get_user_messages(token: str, db: Session = Depends(Database.get_session)):
     message_service = MessageService(message_repository=MessageRepository(db))
     try:
-        return message_service.get_user_messages(email_id)
+        return message_service.get_user_messages(token)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail=f"Database error occurred: {str(e)}")
 
 
-@message_router.post("/message/", status_code=201, response_model=MessageResponseModel)
-def create_message(message: MessageCreate, db: Session = Depends(Database.get_session)):
+@message_router.post("/{token}/message/", status_code=201, response_model=MessageResponseModel)
+def create_message(token: str,message: MessageCreate, db: Session = Depends(Database.get_session)):
     message_service = MessageService(message_repository=MessageRepository(db))
     try:
-        return message_service.save_user_message(message)
+        return message_service.save_user_message(message, token)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except SQLAlchemyError as e:
