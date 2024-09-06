@@ -7,9 +7,11 @@ class MessageService:
     def __init__(self, message_repository: MessageRepository):
         self.message_repository = message_repository
 
-    def get_user_messages(self, email: str) -> MessageDto:
+    def get_user_messages(self, token: str) -> MessageDto:
+        if token is None:
+            raise ValueError("Token not found")
 
-        db_user = self.message_repository.get_user_messages(email)
+        db_user = self.message_repository.get_user_messages(token)
         if db_user is None:
             raise ValueError("User not found")
 
@@ -28,7 +30,9 @@ class MessageService:
             id=db_user.id, email=db_user.email, messages=message_response_list
         )
 
-    def save_user_message(self, message: MessageCreate) -> MessageResponseModel:
+    def save_user_message(self, message: MessageCreate, token: str) -> MessageResponseModel:
+        if token is None:
+            raise ValueError("Token Not Found")
 
         if not message.content:
             raise ValueError("Message content cannot be empty")
